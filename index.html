@@ -109,7 +109,7 @@
             border-radius: 2px;
         }
 
-        /* Home Style */
+        /* Hero Style */
         .hero {
             display: flex;
             align-items: center;
@@ -264,7 +264,7 @@
             padding: 1.5rem;
         }
 
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 768px) {
             .hero {
                 flex-direction: column;
@@ -308,12 +308,10 @@
         </div>
     </nav>
 
-    <!-- Home Section -->
     <section id="home" class="section active">
         <div class="hero">
             <div class="hero-img">
-                <!-- Relative path for GitHub. Ensure profile.jpg is uploaded to the same folder. -->
-                <img src="profile.jpg" alt="Yi-Ching Lu" onerror="this.src='https://via.placeholder.com/250x250?text=Photo'">
+                <img id="profile-img" src="profile.jpg" alt="Yi-Ching Lu">
             </div>
             <div class="hero-text">
                 <h1>Yi-Ching Lu</h1>
@@ -340,7 +338,6 @@
         </div>
     </section>
 
-    <!-- Research Section -->
     <section id="research" class="section">
         <h2>Work in Progress <span style="font-weight: 300;">Research</span></h2>
         <div class="title-underline"></div>
@@ -361,27 +358,23 @@
         </div>
     </section>
 
-    <!-- CV Section -->
     <section id="cv" class="section">
         <h2>Curriculum Vitae <span style="font-weight: 300;">CV</span></h2>
         <div class="title-underline"></div>
 
         <div class="cv-card">
             <div class="cv-actions">
-                <!-- Ensure your PDF is named Simple_CV.pdf and located in the root directory -->
-                <a href="Simple_CV.pdf" target="_blank" class="action-btn">
+                <a id="cv-link-view" target="_blank" class="action-btn">
                     <i data-lucide="external-link" size="18"></i> View Full CV
                 </a>
-                <a href="Simple_CV.pdf" download class="action-btn secondary">
+                <a id="cv-link-download" download="Yi-Ching_Lu_CV.pdf" class="action-btn secondary">
                     <i data-lucide="download" size="18"></i> Download PDF
                 </a>
             </div>
-
-            <iframe id="pdf-viewer" src="Simple_CV.pdf"></iframe>
+            <iframe id="pdf-viewer" src=""></iframe>
         </div>
     </section>
 
-    <!-- Others Section -->
     <section id="others" class="section">
         <h2>Others <span style="font-weight: 300;">Extracurricular</span></h2>
         <div class="title-underline"></div>
@@ -409,6 +402,26 @@
     </footer>
 
     <script>
+        // 核心修正：自動補全 GitHub Pages 的相對路徑
+        const getBasePath = () => {
+            const path = window.location.pathname;
+            return path.substring(0, path.lastIndexOf('/') + 1);
+        };
+
+        const basePath = getBasePath();
+        const cvFileName = "Simple_CV.pdf";
+        const photoFileName = "profile.jpg";
+
+        // 更新圖片與 PDF 路徑
+        document.getElementById('profile-img').src = basePath + photoFileName;
+        document.getElementById('profile-img').onerror = function() {
+            this.src = 'https://via.placeholder.com/250x250?text=Photo';
+        };
+
+        document.getElementById('cv-link-view').href = basePath + cvFileName;
+        document.getElementById('cv-link-download').href = basePath + cvFileName;
+        document.getElementById('pdf-viewer').src = basePath + cvFileName;
+
         lucide.createIcons();
 
         function showSection(sectionId) {
