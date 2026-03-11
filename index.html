@@ -141,9 +141,10 @@
         }
 
         .hero-text p.subtitle {
-            font-size: 1.2rem;
+            font-size: 1.1rem; /* 稍微縮小以利於單行顯示 */
             color: var(--text-muted);
             margin-bottom: 1rem;
+            font-weight: 500;
         }
 
         .contact-info {
@@ -317,7 +318,8 @@
             </div>
             <div class="hero-text">
                 <h1>Yi-Ching Lu</h1>
-                <p class="subtitle">Third-year PhD student in Economics | University of Rochester</p>
+                <!-- 修正點：將職稱與學校合併在同一行 -->
+                <p class="subtitle">Third-year PhD student in Economics, University of Rochester</p>
                 <div class="title-underline"></div>
                 
                 <div class="contact-info">
@@ -335,13 +337,13 @@
                     </div>
                 </div>
 
-                <p>I am a third-year PhD student in the Department of Economics at the University of Rochester. My research interests primarily lie in Macroeconomics, with a focus on automation, regional labor market dynamics, and the anatomy of AI adoption.</p>
+                <p>I am a third-year PhD student in the Department of Economics at the University of Rochester. My research interests lie in macroeconomics, international economics, and spatial economics, with a particular focus on automation, regional labor market dynamics, and the anatomy of AI adoption.</p>
             </div>
         </div>
     </section>
 
     <section id="research" class="section">
-        <h2>Work in Progress <span style="font-weight: 300;">Research</span></h2>
+        <h2>Work in Progress</h2>
         <div class="title-underline"></div>
         
         <div class="research-item">
@@ -404,10 +406,9 @@
     </footer>
 
     <script>
-        // 優化路徑邏輯：如果是自定義網域，路徑會是 "/"
         const getBasePath = () => {
-            const path = window.location.pathname;
-            // 如果是在 GitHub 子目錄中，保留子目錄路徑；如果是根目錄則回傳空字串
+            const loc = window.location;
+            const path = loc.pathname;
             if (path.includes('.github.io')) {
                 return path.substring(0, path.lastIndexOf('/') + 1);
             }
@@ -421,30 +422,29 @@
         const profileImg = document.getElementById('profile-img');
         profileImg.src = basePath + photoFileName;
         profileImg.onerror = function() {
-            // 如果加載失敗，嘗試直接加載（不帶 basePath）
-            if (this.src !== photoFileName) this.src = photoFileName;
+            this.src = photoFileName;
         };
 
-        const cvUrl = basePath + cvFileName;
-        document.getElementById('cv-link-view').href = cvUrl;
-        document.getElementById('cv-link-download').href = cvUrl;
-        document.getElementById('pdf-viewer').src = cvUrl;
+        const updateCVLinks = () => {
+            const cvFullUrl = basePath === "/" ? cvFileName : basePath + cvFileName;
+            document.getElementById('cv-link-view').href = cvFullUrl;
+            document.getElementById('cv-link-download').href = cvFullUrl;
+            const viewer = document.getElementById('pdf-viewer');
+            viewer.src = cvFullUrl;
+        };
 
+        updateCVLinks();
         lucide.createIcons();
 
         function showSection(sectionId) {
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => section.classList.remove('active'));
-
             const targetSection = document.getElementById(sectionId);
             if (targetSection) targetSection.classList.add('active');
-
             const navLinks = document.querySelectorAll('.nav-links a');
             navLinks.forEach(link => link.classList.remove('active'));
-            
             const activeLink = document.getElementById('nav-' + sectionId);
             if (activeLink) activeLink.classList.add('active');
-
             window.scrollTo({ top: 0, behavior: 'smooth' });
             history.pushState(null, null, '#' + sectionId);
         }
