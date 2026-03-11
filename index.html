@@ -117,11 +117,10 @@
             margin-top: 2rem;
         }
 
-        /* 修正點：將 hero-img 從圓形改為長方形 */
         .hero-img {
-            width: 280px; /* 固定寬度 */
-            max-height: 400px; /* 設定最大高度防止圖片過長 */
-            border-radius: 12px; /* 圓角長方形 */
+            width: 280px; 
+            max-height: 450px; 
+            border-radius: 12px; 
             background: var(--bg-white);
             overflow: hidden;
             flex-shrink: 0;
@@ -131,9 +130,9 @@
 
         .hero-img img {
             width: 100%;
-            height: auto; /* 自動比例，確保放下整張照片 */
+            height: auto; 
             display: block;
-            object-fit: contain; /* 確保不裁切圖片內容 */
+            object-fit: contain; 
         }
 
         .hero-text h1 {
@@ -318,7 +317,7 @@
             </div>
             <div class="hero-text">
                 <h1>Yi-Ching Lu</h1>
-                <p class="subtitle">Ph.D. Candidate in Economics | University of Rochester</p>
+                <p class="subtitle">Third-year PhD student in Economics | University of Rochester</p>
                 <div class="title-underline"></div>
                 
                 <div class="contact-info">
@@ -336,12 +335,11 @@
                     </div>
                 </div>
 
-                <p>I am a Ph.D. candidate in the Department of Economics at the University of Rochester. My research interests primarily lie in Macroeconomics, with a focus on automation, regional labor market dynamics, and the anatomy of AI adoption.</p>
+                <p>I am a third-year PhD student in the Department of Economics at the University of Rochester. My research interests primarily lie in Macroeconomics, with a focus on automation, regional labor market dynamics, and the anatomy of AI adoption.</p>
             </div>
         </div>
     </section>
 
-    <!-- 其餘區塊保持不變 -->
     <section id="research" class="section">
         <h2>Work in Progress <span style="font-weight: 300;">Research</span></h2>
         <div class="title-underline"></div>
@@ -380,7 +378,7 @@
     </section>
 
     <section id="others" class="section">
-        <h2>Others <span style="font-weight: 300;">Extracurricular</span></h2>
+        <h2>Others</h2>
         <div class="title-underline"></div>
         
         <div class="others-grid">
@@ -406,9 +404,14 @@
     </footer>
 
     <script>
+        // 優化路徑邏輯：如果是自定義網域，路徑會是 "/"
         const getBasePath = () => {
             const path = window.location.pathname;
-            return path.substring(0, path.lastIndexOf('/') + 1);
+            // 如果是在 GitHub 子目錄中，保留子目錄路徑；如果是根目錄則回傳空字串
+            if (path.includes('.github.io')) {
+                return path.substring(0, path.lastIndexOf('/') + 1);
+            }
+            return "/"; 
         };
 
         const basePath = getBasePath();
@@ -418,12 +421,14 @@
         const profileImg = document.getElementById('profile-img');
         profileImg.src = basePath + photoFileName;
         profileImg.onerror = function() {
-            this.src = 'https://via.placeholder.com/250x250?text=Photo';
+            // 如果加載失敗，嘗試直接加載（不帶 basePath）
+            if (this.src !== photoFileName) this.src = photoFileName;
         };
 
-        document.getElementById('cv-link-view').href = basePath + cvFileName;
-        document.getElementById('cv-link-download').href = basePath + cvFileName;
-        document.getElementById('pdf-viewer').src = basePath + cvFileName;
+        const cvUrl = basePath + cvFileName;
+        document.getElementById('cv-link-view').href = cvUrl;
+        document.getElementById('cv-link-download').href = cvUrl;
+        document.getElementById('pdf-viewer').src = cvUrl;
 
         lucide.createIcons();
 
